@@ -1,0 +1,59 @@
+name: Update Web from NeonDB 
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: pages-neondb
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get update && sudo apt-get install -y postgresql-client
+
+      - name: Fetch CSV from Neon
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          set -e
+          psql "$DATABASE_URL" -c "\copy (SELECT id, channel_id, status, title FROM tickets) TO 'tickets.csv' CSV HEADER"
+          psql "$DATABASE_URL" -c "\copy (SELECT version FROM mod_versions ORDER BY version DESC) TO 'mod_versions.csv' CSV HEADER"
+          echo "--- tickets.csv head ---"
+          head tickets.csv || true
+
+      - name: Generate HTML
+        run: |
+          python3 generate_html.py
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+    steps:
+      - uses: actions/deploy-pages@v4
