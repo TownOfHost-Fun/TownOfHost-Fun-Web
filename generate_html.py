@@ -1,5 +1,6 @@
 import csv, html
 from pathlib import Path
+from datetime import datetime
 
 SERVER_ID = "1399723941722853376"
 
@@ -10,27 +11,31 @@ def read_csv(path):
 tickets = read_csv("tickets.csv")
 mods    = read_csv("mod_versions.csv")
 
-header = """<!DOCTYPE html>
+# 更新日時
+generated_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+header = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>TownOfHost-Fun Web</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h2 { margin-top: 40px; }
-    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; cursor: pointer; user-select: none; }
-    tr:nth-child(even) { background-color: #fafafa; }
-    input, select, label { padding: 5px; margin: 10px 10px 10px 0; vertical-align: middle; }
-    .controls { margin-bottom: 10px; }
-    .sort-indicator { font-size: 0.9em; margin-left: 6px; color: #666; }
-    #modsTable th { cursor: default; }
-    .small { font-size: 0.9em; color: #555; }
+    body {{ font-family: Arial, sans-serif; padding: 20px; }}
+    h2 {{ margin-top: 40px; }}
+    table {{ border-collapse: collapse; width: 100%; margin-bottom: 20px; }}
+    th, td {{ border: 1px solid #ccc; padding: 8px; text-align: left; }}
+    th {{ background-color: #f2f2f2; cursor: pointer; user-select: none; }}
+    tr:nth-child(even) {{ background-color: #fafafa; }}
+    input, select, label {{ padding: 5px; margin: 10px 10px 10px 0; vertical-align: middle; }}
+    .controls {{ margin-bottom: 10px; }}
+    .sort-indicator {{ font-size: 0.9em; margin-left: 6px; color: #666; }}
+    #modsTable th {{ cursor: default; }}
+    .small {{ font-size: 0.9em; color: #555; }}
   </style>
 </head>
 <body>
 <h1>TownOfHost-Fun Web</h1>
+<p class="small">最終更新: {generated_time}</p>
 """
 
 tickets_html_start = """
@@ -46,7 +51,8 @@ tickets_html_start = """
   <label for="titleSearch">タイトルで検索：</label>
   <input type="text" id="titleSearch" onkeyup="filterTickets()" placeholder="タイトルで検索">
 
-  <span class="small">「ID」をクリックして昇順/降順を切り替えることができます　5分ごとにデータが更新されます</span>
+  <span class="small">「ID」をクリックして昇順/降順を切り替えることができます</span><br>
+  <span class="small">データは最新でない場合があります。</span>
 </div>
 
 <table id="ticketsTable">
@@ -56,11 +62,12 @@ tickets_html_start = """
       <th>チャンネル</th>
       <th>ステータス</th>
       <th>タイトル</th>
+      <th>バージョン</th>
     </tr>
   </thead>
   <tbody>
-    
 """
+
 
 tickets_html_rows = ""
 for row in tickets:
@@ -72,6 +79,7 @@ for row in tickets:
         f"      <td><a target=\"_blank\" href=\"{html.escape(channel_link)}\">{html.escape(channel_id)}</a></td>\n"
         f"      <td>{html.escape(str(row.get('status','')))}</td>\n"
         f"      <td>{html.escape(str(row.get('title','')))}</td>\n"
+        f"      <td>{html.escape(str(row.get('version','')))}</td>\n"
         "    </tr>\n"
     )
 
@@ -109,9 +117,9 @@ function filterTickets() {
   var trs = table.getElementsByTagName("tr");
   for (var i = 1; i < trs.length; i++) {
     var tds = trs[i].getElementsByTagName("td");
-    if (tds.length < 4) { trs[i].style.display = ""; continue; }
+    if (tds.length < 5) { trs[i].style.display = ""; continue; }
     var rowStatus = tds[2].textContent.toLowerCase();
-    var rowTitle = tds[3].textContent.toLowerCase();
+    var rowTitle  = tds[3].textContent.toLowerCase();
     trs[i].style.display = ((status === "" || rowStatus === status) && rowTitle.includes(search)) ? "" : "none";
   }
 }
@@ -239,6 +247,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </body>
 </html>
 """
+
 
 full = (
     header
