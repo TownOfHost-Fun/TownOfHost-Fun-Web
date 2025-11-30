@@ -1,6 +1,6 @@
 import csv, html
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 SERVER_ID = "1399723941722853376"
 
@@ -11,8 +11,11 @@ def read_csv(path):
 tickets = read_csv("tickets.csv")
 mods    = read_csv("mod_versions.csv")
 
+# JST（UTC+9）にする!!!!UST表示してもねぇ、わからないよ！
+JST = timezone(timedelta(hours=9))
+
 # 更新日時
-generated_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+generated_time = datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S")
 
 header = f"""<!DOCTYPE html>
 <html lang="ja">
