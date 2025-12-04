@@ -60,14 +60,14 @@ tickets_html_start = """
 
 <table id="ticketsTable">
   <thead>
-    <tr>
-      <th id="idHeader" onclick="toggleSortById()">ID <span id="idSortIndicator" class="sort-indicator">↑</span></th>
-      <th>チャンネル</th>
-      <th>ステータス</th>
-      <th>タイトル</th>
-      <th>バージョン</th>
-    </tr>
-  </thead>
+  <tr>
+    <th id="idHeader" onclick="toggleSortById()">ID <span id="idSortIndicator" class="sort-indicator">↑</span></th>
+    <th>バージョン</th>
+    <th>ステータス</th>
+    <th>タイトル</th>
+    <th>Discord</th>
+  </tr>
+</thead>
   <tbody>
 """
 
@@ -76,15 +76,17 @@ tickets_html_rows = ""
 for row in tickets:
     channel_id = str(row.get("channel_id",""))
     channel_link = f"https://discord.com/channels/{SERVER_ID}/{channel_id}"
+
     tickets_html_rows += (
         "    <tr>\n"
         f"      <td>{html.escape(str(row.get('id','')))}</td>\n"
-        f"      <td><a target=\"_blank\" href=\"{html.escape(channel_link)}\">{html.escape(channel_id)}</a></td>\n"
+        f"      <td>{html.escape(str(row.get('version','')))}</td>\n"
         f"      <td>{html.escape(str(row.get('status','')))}</td>\n"
         f"      <td>{html.escape(str(row.get('title','')))}</td>\n"
-        f"      <td>{html.escape(str(row.get('version','')))}</td>\n"
+        f"      <td><a target=\"_blank\" href=\"{html.escape(channel_link)}\">🔗 </a></td>\n"
         "    </tr>\n"
     )
+
 
 tickets_html_end = """
   </tbody>
