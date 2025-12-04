@@ -96,7 +96,6 @@ tickets_end = """
 </div>
 
 <div id="modsTab" class="tabcontent">
-<h2>TownOfHost-Fun VersionList</h2>
 <div class="controls">
 <label for="versionSearch">バージョン検索：</label>
 <input type="text" id="versionSearch" placeholder="部分文字列で絞り込み" oninput="buildModsTable()">
