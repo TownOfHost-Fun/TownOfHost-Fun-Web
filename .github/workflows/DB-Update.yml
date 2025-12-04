@@ -1,4 +1,4 @@
-name: Update Web from NeonDB 
+name: Update Web Data from DB
 
 on:
   schedule:
