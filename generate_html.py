@@ -77,15 +77,19 @@ for row in tickets:
     channel_id = str(row.get("channel_id",""))
     channel_link = f"https://discord.com/channels/{SERVER_ID}/{channel_id}"
 
+    # opdnは未修正、closedは修正済みにする
+    status_jp = "未修正" if row.get("status","").lower() == "open" else "修正済み"
+
     tickets_html_rows += (
         "    <tr>\n"
         f"      <td>{html.escape(str(row.get('id','')))}</td>\n"
         f"      <td>{html.escape(str(row.get('version','')))}</td>\n"
-        f"      <td>{html.escape(str(row.get('status','')))}</td>\n"
+        f"      <td>{html.escape(status_jp)}</td>\n"
         f"      <td>{html.escape(str(row.get('title','')))}</td>\n"
         f"      <td><a target=\"_blank\" href=\"{html.escape(channel_link)}\">🔗 </a></td>\n"
         "    </tr>\n"
     )
+
 
 
 tickets_html_end = """
