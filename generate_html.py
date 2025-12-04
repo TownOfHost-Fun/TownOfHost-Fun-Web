@@ -17,6 +17,7 @@ generated_time = datetime.now(JST).strftime("%Y-%m-%d %H:%M:%S")
 header = f"""<!DOCTYPE html>
 <html lang="ja">
 <head>
+<link rel="icon" href="TOH_F.ico">
 <meta charset="UTF-8">
 <title>TownOfHost-Fun Web</title>
 <style>
