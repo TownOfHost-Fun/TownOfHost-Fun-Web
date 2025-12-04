@@ -68,7 +68,7 @@ input, select, label {{ padding: 5px; margin: 10px 10px 10px 0; vertical-align: 
 <th>バージョン</th>
 <th>ステータス</th>
 <th>タイトル</th>
-<th>Discord</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
