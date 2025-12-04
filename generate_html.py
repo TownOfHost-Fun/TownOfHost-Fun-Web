@@ -47,8 +47,8 @@ tickets_html_start = """
   <label for="statusFilter">ステータスで絞り込み：</label>
   <select id="statusFilter" onchange="filterTickets()">
     <option value="">全て</option>
-    <option value="open">Open</option>
-    <option value="closed">Closed</option>
+    <option value="open">未修正</option>
+    <option value="closed">修正済み</option>
   </select>
 
   <label for="titleSearch">タイトルで検索：</label>
