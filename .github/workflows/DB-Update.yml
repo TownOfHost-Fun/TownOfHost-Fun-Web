@@ -33,7 +33,7 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           set -e
-          psql "$DATABASE_URL" -c "\copy (SELECT id, channel_id, status, title FROM tickets) TO 'tickets.csv' CSV HEADER"
+          psql "$DATABASE_URL" -c "\copy (SELECT id, channel_id, status, title, version FROM tickets) TO 'tickets.csv' CSV HEADER"
           psql "$DATABASE_URL" -c "\copy (SELECT version FROM mod_versions ORDER BY version DESC) TO 'mod_versions.csv' CSV HEADER"
           echo "--- tickets.csv head ---"
           head tickets.csv || true
