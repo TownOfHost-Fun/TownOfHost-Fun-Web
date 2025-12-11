@@ -77,18 +77,22 @@ input, select, label {{ padding: 5px; margin: 10px 10px 10px 0; vertical-align: 
 
 tickets_rows = ""
 for row in tickets:
-    channel_id = str(row.get("channel_id",""))
+    channel_id = str(row.get("channel_id", ""))
     channel_link = f"https://discord.com/channels/{SERVER_ID}/{channel_id}"
-    status_jp = "⚠️未修正" if row.get("status","").lower() == "open" else "✅修正済み"
+
+    status_raw = row.get("status", "").lower()
+    status_jp = "⚠️未修正" if status_raw == "open" else "✅修正済み"
+
     tickets_rows += (
-        f"<tr>"
-        f"<td>{html.escape(str(row.get('id','')))}</td>"
-        f"<td>{html.escape(str(row.get('version','')))}</td>"
+        f"<tr data-status='{html.escape(status_raw)}'>"
+        f"<td>{html.escape(str(row.get('id', '')))}</td>"
+        f"<td>{html.escape(str(row.get('version', '')))}</td>"
         f"<td>{html.escape(status_jp)}</td>"
-        f"<td>{html.escape(str(row.get('title','')))}</td>"
+        f"<td>{html.escape(str(row.get('title', '')))}</td>"
         f"<td><a target='_blank' href='{html.escape(channel_link)}'>🔗</a></td>"
         f"</tr>"
     )
+
 
 tickets_end = """
 </tbody>
@@ -147,7 +151,9 @@ function filterTickets(){
             tr.style.display = "";
             return;
         }
-        var rowStatus = tds[2].textContent.toLowerCase();
+        
+        var rowStatus = tr.dataset.status;
+
         var rowTitle = tds[3].textContent.toLowerCase();
 
         var visible =
@@ -157,6 +163,7 @@ function filterTickets(){
         tr.style.display = visible ? "" : "none";
     });
 }
+
 
 document.addEventListener("DOMContentLoaded", function(){
     try{
