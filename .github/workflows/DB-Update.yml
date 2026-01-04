@@ -2,7 +2,7 @@ name: Update Web Data from DB
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "*/60 * * * *"
   workflow_dispatch:
 
 concurrency:
