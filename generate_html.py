@@ -58,7 +58,7 @@ input, select, label {{ padding: 5px; margin: 10px 10px 10px 0; vertical-align: 
 <label for="titleSearch">タイトルで検索：</label>
 <input type="text" id="titleSearch" onkeyup="filterTickets()" placeholder="タイトルで検索">
 <span class="small">「ID」をクリックして昇順/降順を切り替えることができます</span><br>
-<span class="small">データは最新でない場合があります。</span><br>
+<span class="small">データは約1時間ごとに更新されます。</span><br>
 <span class="small">「✅修正済み」は、次回のアップデートで修正されるものも含まれます。</span>
 </div>
 
